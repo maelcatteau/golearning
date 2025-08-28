@@ -14,20 +14,22 @@ func TestPerimetre(t *testing.T) {
 
 func TestAire(t *testing.T) {
 
-	verifierAire := func(t testing.TB, forme Forme, attendu float64) {
-		t.Helper()
-		resultat := forme.Aire()
-		if resultat != attendu {
-			t.Errorf("attendu %g mais reçu %g", resultat, attendu)
-		}
+	testsAire := []struct {
+		nom   string
+		forme Forme
+		aAire float64
+	}{
+		{nom: "Rectangle", forme: Rectangle{Largeur: 12.0, Longueur: 6.0}, aAire: 72.0},
+		{nom: "Cercle", forme: Cercle{Rayon: 10.0}, aAire: 314.1592653589793},
+		{nom: "Triangle", forme: Triangle{Base: 12.0, Hauteur: 6.0}, aAire: 36.0},
 	}
-	t.Run("Test rectangle", func(t *testing.T) {
-		rectangle := Rectangle{12.0, 6.0}
-		verifierAire(t, rectangle, 72.0)
-	})
+	for _, tt := range testsAire {
+		t.Run(tt.nom, func(t *testing.T) {
+			resultat := tt.forme.Aire()
+			if resultat != tt.aAire {
+				t.Errorf("%#v, reçu %g mais attendu %g", tt.forme, resultat, tt.aAire)
+			}
+		})
+	}
 
-	t.Run("Test cercle", func(t *testing.T) {
-		cercle := Cercle{10.0}
-		verifierAire(t, cercle, 314.1592653589793)
-	})
 }
